@@ -1,4 +1,4 @@
-package ar.edu.unicen.seminariomobile.ui
+package ar.edu.unicen.seminariomobile.ui.movies
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

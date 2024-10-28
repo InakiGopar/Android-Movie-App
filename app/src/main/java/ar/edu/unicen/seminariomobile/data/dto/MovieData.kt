@@ -14,6 +14,8 @@ class MovieData (
     val posterPath: String?,
     @SerializedName("vote_average")
     val voteAverage: Double,
+    @SerializedName("genres")
+    val genres: List<GenreDTto> ? = null
 ) {
 
     fun toMovie(): Movie {
@@ -22,7 +24,8 @@ class MovieData (
             title = this.title,
             overview = this.overview,
             posterPath = this.posterPath ?: "ruta/default.jpg",
-            voteAverage = this.voteAverage
+            voteAverage = this.voteAverage,
+            genres = this.genres?.map { Genre(it.id, it.name) } ?: emptyList()
         )
     }
 

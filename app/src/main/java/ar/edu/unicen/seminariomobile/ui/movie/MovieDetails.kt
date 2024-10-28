@@ -1,4 +1,4 @@
-package ar.edu.unicen.seminariomobile.ui
+package ar.edu.unicen.seminariomobile.ui.movie
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ar.edu.unicen.seminariomobile.R
+import ar.edu.unicen.seminariomobile.data.dto.Genre
+import ar.edu.unicen.seminariomobile.ui.components.genres.GenreList
 import coil.compose.SubcomposeAsyncImage
 
 @Composable
@@ -26,6 +28,7 @@ fun MovieDetails(
      overview: String,
      posterPath: String,
      voteAverage: Double,
+     genres: List<Genre>
 
 
 ) {
@@ -39,7 +42,7 @@ fun MovieDetails(
 
         SubcomposeAsyncImage(
             model = "https://image.tmdb.org/t/p/w500${posterPath}",
-            contentDescription = "Poster of ${title}",
+            contentDescription = "Poster of $title",
             modifier = Modifier.height(280.dp).width(180.dp),
             loading = {
                 CircularProgressIndicator(
@@ -64,14 +67,17 @@ fun MovieDetails(
             textAlign = TextAlign.Center
         )
 
+        if (genres.isNotEmpty()) {
+            GenreList(genres = genres.map { it.name })
+        }
+
+
         Text(
             text = voteAverage.toString(),
             style = MaterialTheme.typography.bodyLarge,
             color = colorResource(id = R.color.textPrimaryColor),
             fontWeight = FontWeight(500)
         )
-
-
     }
 
 }

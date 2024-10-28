@@ -1,4 +1,4 @@
-package ar.edu.unicen.seminariomobile.ui
+package ar.edu.unicen.seminariomobile.ui.movies
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,6 +28,7 @@ import androidx.navigation.NavController
 import ar.edu.unicen.seminariomobile.R
 import ar.edu.unicen.seminariomobile.ui.components.Search
 import ar.edu.unicen.seminariomobile.ui.components.LoadingScreen
+import ar.edu.unicen.seminariomobile.ui.components.NotFound
 import ar.edu.unicen.seminariomobile.viewModel.MovieViewModel
 
 
@@ -67,7 +67,7 @@ fun MovieListScreen(
     if (isLoading) {
       LoadingScreen()
     }
-    else {
+    else if (movieList.isNotEmpty()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier
@@ -112,5 +112,8 @@ fun MovieListScreen(
                 }
             }
         }
+    }
+    else {
+        NotFound()
     }
 }

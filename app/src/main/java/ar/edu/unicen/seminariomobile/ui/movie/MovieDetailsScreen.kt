@@ -1,4 +1,4 @@
-package ar.edu.unicen.seminariomobile.ui
+package ar.edu.unicen.seminariomobile.ui.movie
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +32,9 @@ fun MovieDetailsScreen(
                 title = movie!!.title,
                 overview = movie!!.overview,
                 posterPath = movie!!.posterPath,
-                voteAverage = movie!!.voteAverage
+                voteAverage = movie!!.voteAverage,
+                genres = movie!!.genres
+
             )
         } else {
             // Manejo del caso en que movie es null

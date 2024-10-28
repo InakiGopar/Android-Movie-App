@@ -12,8 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import ar.edu.unicen.seminariomobile.ui.MovieDetailsScreen
-import ar.edu.unicen.seminariomobile.ui.MovieListScreen
+import ar.edu.unicen.seminariomobile.ui.movie.MovieDetailsScreen
+import ar.edu.unicen.seminariomobile.ui.movies.MovieListScreen
 import ar.edu.unicen.seminariomobile.viewModel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
