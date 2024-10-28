@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textPrimaryColor">@color/black</color>
+    <color name="brandColor">@color/red</color>
+    <color name="backgroundColor">@color/white</color>
+
+    <color name="btnBackgroundColor">@color/red</color>
+    <color name="btnContentColor">@color/white</color>
+
+    <color name="outlinedTextField_unfocus">@color/light_grey</color>
+    <color name="outlinedTextField_focus">@color/light_grey</color>
+    <color name="placheholder_text">@color/semidark_grey</color>
+</resources>
