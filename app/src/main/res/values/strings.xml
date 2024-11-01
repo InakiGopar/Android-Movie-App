@@ -5,6 +5,7 @@
     <string name="search">Search</string>
     <string name="search_movie">Search movie...</string>
     <string name="search_placeholder">write what you want to see</string>
+    <string name="back">back</string>
     <string name="movie_not_found">Movie not found :(</string>
 
 </resources>

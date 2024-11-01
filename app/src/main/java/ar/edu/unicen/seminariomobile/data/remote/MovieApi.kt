@@ -34,6 +34,7 @@ interface MovieApi {
     @GET("search/movie")
     suspend fun searchMovies(
         @Query("api_key") apiKey: String,
-        @Query("query") title: String
+        @Query("query") title: String,
+        @Query("page") page: Int
     ): Response<MovieDto>
 }

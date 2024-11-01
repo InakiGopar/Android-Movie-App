@@ -20,7 +20,8 @@ class MovieRemoteDataSource @Inject constructor(
      * mapeamos cada pelicula dentro de results al objeto Movie
      * */
     suspend fun getMovies(
-        page: Int
+        page: Int,
+
     ): List<Movie>? {
         return withContext(Dispatchers.IO) {
             try {
@@ -52,11 +53,12 @@ class MovieRemoteDataSource @Inject constructor(
     }
 
     suspend fun searchMovies(
-        title : String
+        title : String,
+        page: Int
     ): List<Movie>? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = movieApi.searchMovies(ApiConfig.API_KEY, title)
+                val response = movieApi.searchMovies(ApiConfig.API_KEY, title, page)
                 return@withContext response.body()?.results?.map { movie ->
                     movie.toMovie()
                 }

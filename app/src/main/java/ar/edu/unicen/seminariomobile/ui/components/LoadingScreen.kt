@@ -42,6 +42,6 @@ fun LoadingScreen() {
 
 @Composable
 @Preview(showBackground = true)
-private fun LoadingPreviw() {
+private fun LoadingPreview() {
     LoadingScreen()
 }

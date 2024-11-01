@@ -1,7 +1,12 @@
 package ar.edu.unicen.seminariomobile.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import ar.edu.unicen.seminariomobile.data.Movie
+import ar.edu.unicen.seminariomobile.data.remote.MoviePagingSource
 import ar.edu.unicen.seminariomobile.data.remote.MovieRemoteDataSource
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
@@ -13,27 +18,22 @@ import javax.inject.Inject
  *
  * */
 class MovieRepository @Inject constructor(
-    private val movieDataSource: MovieRemoteDataSource
+    private val movieDataSource: MovieRemoteDataSource,
 ) {
 
-    /**
-     * @return este metodo devuelve la lista de peliculas populares provenientes de la clase
-     * MovieRemoteDataSource.
-     *
-     * @param apiKey es la llave de seguridad que necesitamos para tener acceso a la API
-     * @param page aca va el numero de paginado
-     * */
-    suspend fun getMovies( page: Int): List<Movie>? {
-        return movieDataSource.getMovies(page)
+    fun getMovies(query: String): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = { MoviePagingSource(movieDataSource, query) }
+        ).flow
     }
+
 
     suspend fun getMovieById(movieId: Long): Movie? {
         return movieDataSource.getMovieById(movieId)
     }
 
-    suspend fun searchMovies(title: String): List<Movie>? {
-        return movieDataSource.searchMovies(title)
-    }
+
 
 
 }

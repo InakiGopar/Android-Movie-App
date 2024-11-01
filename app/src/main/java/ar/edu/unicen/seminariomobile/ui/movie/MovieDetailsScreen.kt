@@ -20,7 +20,7 @@ fun MovieDetailsScreen(
         movieViewModel.getMovieById(movieId)
     }
 
-    val movie by movieViewModel.selectedMovie.collectAsStateWithLifecycle()
+    val movie by movieViewModel.movie.collectAsStateWithLifecycle()
     val isLoading by movieViewModel.isLoading.collectAsStateWithLifecycle()
 
     if (isLoading) {

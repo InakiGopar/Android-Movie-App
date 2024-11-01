@@ -77,7 +77,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
 
-
+    implementation(libs.androidx.paging)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

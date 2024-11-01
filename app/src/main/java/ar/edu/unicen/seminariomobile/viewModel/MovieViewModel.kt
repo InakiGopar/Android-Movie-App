@@ -1,14 +1,17 @@
 package ar.edu.unicen.seminariomobile.viewModel
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import ar.edu.unicen.seminariomobile.data.Movie
 import ar.edu.unicen.seminariomobile.data.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,31 +25,47 @@ class MovieViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ): ViewModel() {
 
-    private val _movies = MutableStateFlow<List<Movie>>(emptyList())
-    val movies: StateFlow<List<Movie>> get() = _movies
+    // Flow para las películas paginadas
+    private val _movies = MutableStateFlow<PagingData<Movie>>(PagingData.empty())
+    val movies: StateFlow<PagingData<Movie>> = _movies.asStateFlow()
 
-    private val _selectedMovie = MutableStateFlow<Movie?>(null)
-    val selectedMovie: StateFlow<Movie?> get() = _selectedMovie.asStateFlow()
-
-    private val _currentPage = MutableStateFlow(1)
-    val currentPage: StateFlow<Int> get() = _currentPage
+    private val _movie = MutableStateFlow<Movie?>(null)
+    val movie: StateFlow<Movie?> get() = _movie.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
+    // Control de búsqueda
+    private var currentSearchQuery: String = ""
 
-    fun getMovies(page: Int) {
-        viewModelScope.launch {
+    private var searchJob: Job? = null
 
-            _isLoading.value = true
 
-            //obtengo las peliculas del Repository, pasandole la llave y el número de pagina
-            val movieList = movieRepository.getMovies(page)
-            _movies.value = movieList ?: emptyList()
 
-            _isLoading.value = false
+    private fun getMovies(query: String = "") {
+
+        currentSearchQuery = query
+
+        searchJob?.cancel() // Cancelar el trabajo anterior si existe
+
+        searchJob = viewModelScope.launch {
+            // Obtener las peliculas paginadas
+            movieRepository.getMovies(query)
+                .collectLatest { pagingData ->
+                    _movies.value = pagingData
+                }
         }
     }
+
+    fun getCurrentMovies() {
+        getMovies(currentSearchQuery)
+    }
+
+
+    fun searchMovies(query: String) {
+        getMovies(query) // Llama a getMovies con la consulta de búsqueda
+    }
+
 
     fun getMovieById(id: Long) {
         viewModelScope.launch {
@@ -54,39 +73,13 @@ class MovieViewModel @Inject constructor(
             _isLoading.value = true
 
             val movie = movieRepository.getMovieById(id)
-            _selectedMovie.value = movie
+            _movie.value = movie
 
             _isLoading.value = false
 
         }
     }
 
-    fun getNextPage() {
-        viewModelScope.launch {
-            _isLoading.value = true
-
-            val nextPage = currentPage.value + 1
-            val newMovies = movieRepository.getMovies(nextPage)
-
-            newMovies?.let {
-                _movies.value += it  // Agrega las nuevas películas a la lista actual
-                _currentPage.value = nextPage
-            }
-
-            _isLoading.value = false
-        }
-    }
-
-    fun searchMovies(title: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-
-            val searchResults = movieRepository.searchMovies(title)
-            _movies.value = searchResults ?: emptyList()
-
-            _isLoading.value = false
-        }
-    }
 
 
 

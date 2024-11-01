@@ -1,9 +1,12 @@
 package ar.edu.unicen.seminariomobile.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,12 +21,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shape
 
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,14 +87,21 @@ fun Search(
             // Botón de búsqueda
             TextButton(
                 onClick = onSearchClick,
+                modifier = Modifier.height(50.dp).width(50.dp),
                 colors = ButtonColors(
                     containerColor = colorResource(id = R.color.btnBackgroundColor),
                     contentColor = colorResource(id = R.color.btnContentColor),
                     disabledContentColor =  Color.Transparent,
                     disabledContainerColor = Color.Transparent
-                )
+                ),
+                shape = RoundedCornerShape(100.dp)
             ) {
-                Text(stringResource(id = R.string.search))
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_search_24),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    colorFilter = ColorFilter.tint(colorResource(id = R.color.textPrimaryColor))
+                )
             }
         }
     }
