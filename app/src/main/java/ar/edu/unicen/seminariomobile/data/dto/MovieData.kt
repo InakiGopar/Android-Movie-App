@@ -23,7 +23,7 @@ class MovieData (
             id = this.id,
             title = this.title,
             overview = this.overview,
-            posterPath = this.posterPath ?: "ruta/default.jpg",
+            posterPath = this.posterPath.toString(),
             voteAverage = this.voteAverage,
             genres = this.genres?.map { Genre(it.id, it.name) } ?: emptyList()
         )

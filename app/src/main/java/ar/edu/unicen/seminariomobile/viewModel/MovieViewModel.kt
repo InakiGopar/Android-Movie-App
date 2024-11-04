@@ -4,6 +4,7 @@ package ar.edu.unicen.seminariomobile.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import ar.edu.unicen.seminariomobile.data.Movie
 import ar.edu.unicen.seminariomobile.data.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,6 +52,7 @@ class MovieViewModel @Inject constructor(
         searchJob = viewModelScope.launch {
             // Obtener las peliculas paginadas
             movieRepository.getMovies(query)
+                .cachedIn(viewModelScope)
                 .collectLatest { pagingData ->
                     _movies.value = pagingData
                 }

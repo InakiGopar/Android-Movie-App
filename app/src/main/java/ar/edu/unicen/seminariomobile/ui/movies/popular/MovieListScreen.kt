@@ -1,4 +1,4 @@
-package ar.edu.unicen.seminariomobile.ui.movies
+package ar.edu.unicen.seminariomobile.ui.movies.popular
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -73,7 +73,7 @@ fun MovieListScreen(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(vertical = 80.dp),
+                    .padding(top = 80.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 items(movies.itemCount) { index ->

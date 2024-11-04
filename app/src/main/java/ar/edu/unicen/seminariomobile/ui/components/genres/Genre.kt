@@ -29,7 +29,7 @@ fun Genre(
     ) {
         Text(
             text = genre,
-            color = colorResource(R.color.textPrimaryColor),
+            color = colorResource(R.color.white),
             style = MaterialTheme.typography.bodyLarge
         )
     }

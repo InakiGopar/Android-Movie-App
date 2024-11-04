@@ -3,9 +3,9 @@
     <string name="loading">Loading...</string>
     <string name="more_movies">More movies</string>
     <string name="search">Search</string>
-    <string name="search_movie">Search movie...</string>
-    <string name="search_placeholder">write what you want to see</string>
-    <string name="back">back</string>
+    <string name="search_placeholder">write your favorite movie</string>
+    <string name="popular">Popular</string>
+    <string name="favorites">Favorites</string>
     <string name="movie_not_found">Movie not found :(</string>
 
 </resources>

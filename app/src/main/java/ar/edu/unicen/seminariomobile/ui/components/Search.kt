@@ -100,7 +100,6 @@ fun Search(
                     painter = painterResource(id = R.drawable.baseline_search_24),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
-                    colorFilter = ColorFilter.tint(colorResource(id = R.color.textPrimaryColor))
                 )
             }
         }

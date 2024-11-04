@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -33,7 +34,7 @@ import coil.compose.SubcomposeAsyncImage
 fun MovieDetails(
      title: String,
      overview: String,
-     posterPath: String,
+     posterPath: String?,
      voteAverage: Double,
      genres: List<Genre>
 
@@ -56,6 +57,14 @@ fun MovieDetails(
             loading = {
                 CircularProgressIndicator(
                     color = colorResource(id = R.color.brandColor)
+                )
+            },
+            error = {
+                Image(
+                    painter = painterResource(id = R.drawable.no),
+                    contentDescription = "Imagen predeterminada",
+                    modifier = Modifier.size(180.dp),
+                    colorFilter = ColorFilter.tint(colorResource(id = R.color.semidark_grey))
                 )
             }
         )
@@ -89,11 +98,12 @@ fun MovieDetails(
             Image(
                 painter = painterResource(id = R.drawable.baseline_star_rate_24),
                 contentDescription = null,
+                modifier = Modifier.padding(bottom = 15.dp),
                 colorFilter = ColorFilter.tint(colorResource(id = R.color.yellow))
             )
             Text(
                 text = voteAverage.toString(),
-                modifier = Modifier.padding(top = 2.dp),
+                modifier = Modifier.padding(top = 2.dp, bottom = 15.dp),
                 style = MaterialTheme.typography.bodyLarge,
                 color = colorResource(id = R.color.yellow),
                 fontWeight = FontWeight(500)
