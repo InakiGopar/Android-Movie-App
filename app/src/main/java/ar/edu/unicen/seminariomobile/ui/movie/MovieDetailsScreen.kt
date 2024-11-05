@@ -1,10 +1,14 @@
 package ar.edu.unicen.seminariomobile.ui.movie
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ar.edu.unicen.seminariomobile.R
 import ar.edu.unicen.seminariomobile.ui.components.LoadingScreen
@@ -29,6 +33,8 @@ fun MovieDetailsScreen(
     else {
         if (movie != null) {
             MovieDetails(
+                movieViewModel = movieViewModel,
+                movie = movie!!,
                 title = movie!!.title,
                 overview = movie!!.overview,
                 posterPath = movie!!.posterPath,
@@ -36,6 +42,7 @@ fun MovieDetailsScreen(
                 genres = movie!!.genres
 
             )
+
         } else {
             // Manejo del caso en que movie es null
             Text(

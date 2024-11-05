@@ -31,6 +31,14 @@ interface MovieApi {
     ): Response<MovieData>
 
 
+    /**
+     * Endpoint que maneja la busqueda de peliculas
+     *
+     * @query api_key: pasar clave de API para autenticar las solicitudes.
+     * @query query: En este parametro va la pelicula que se desea buscar.
+     * @query page: Especifica la página de resultados que deseas obtener en base a la busqueda.
+     *
+     * */
     @GET("search/movie")
     suspend fun searchMovies(
         @Query("api_key") apiKey: String,

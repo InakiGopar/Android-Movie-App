@@ -7,18 +7,13 @@ import javax.inject.Inject
 
 
 /**
- * Esta clase se encarga de obtener de los datos provenientes de fuentes externas
+ * Esta clase se encarga de obtener de los datos provenientes de fuentes externas,
+ * en este caso de la API de peliculas
  * */
 class MovieRemoteDataSource @Inject constructor(
     private val movieApi: MovieApi
 ) {
 
-
-    /**
-     * Este metodo obtiene los datos de la API.
-     * De ser valida la respuesta se obtiene un arreglo results.
-     * mapeamos cada pelicula dentro de results al objeto Movie
-     * */
     suspend fun getMovies(
         page: Int,
 
@@ -35,7 +30,6 @@ class MovieRemoteDataSource @Inject constructor(
             }
         }
     }
-
 
     suspend fun getMovieById(
         movieId: Long

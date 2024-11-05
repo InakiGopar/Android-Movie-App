@@ -1,6 +1,5 @@
 package ar.edu.unicen.seminariomobile.viewModel
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 /**
  * Esta clase es la intermediaria entre los datos y la vista, se encarga de obtener los datos
  * y pasarsela a la ui
@@ -30,11 +28,22 @@ class MovieViewModel @Inject constructor(
     private val _movies = MutableStateFlow<PagingData<Movie>>(PagingData.empty())
     val movies: StateFlow<PagingData<Movie>> = _movies.asStateFlow()
 
+    //Flow para una pelicula en particular
     private val _movie = MutableStateFlow<Movie?>(null)
     val movie: StateFlow<Movie?> get() = _movie.asStateFlow()
 
+    //flow para el estado de carga
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+
+    //flow para las peliculas favoritas
+    private val _favoriteMovies = MutableStateFlow<List<Movie>>(emptyList())
+    val favoriteMovies: StateFlow<List<Movie>> = _favoriteMovies.asStateFlow()
+
+    //flow para verificar si una pelicula esta en favoritos o no
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
+
 
     // Control de búsqueda
     private var currentSearchQuery: String = ""
@@ -42,7 +51,7 @@ class MovieViewModel @Inject constructor(
     private var searchJob: Job? = null
 
 
-
+    //obtener todas las peliculas
     private fun getMovies(query: String = "") {
 
         currentSearchQuery = query
@@ -59,16 +68,17 @@ class MovieViewModel @Inject constructor(
         }
     }
 
+    //traerme las peliculas actuales
     fun getCurrentMovies() {
         getMovies(currentSearchQuery)
     }
 
-
+    //Buscar peliculas en base a un titulo
     fun searchMovies(query: String) {
         getMovies(query) // Llama a getMovies con la consulta de búsqueda
     }
 
-
+    //Obtener una pelicula por su id
     fun getMovieById(id: Long) {
         viewModelScope.launch {
 
@@ -82,8 +92,32 @@ class MovieViewModel @Inject constructor(
         }
     }
 
+    // Obtener las películas favoritas
+    fun loadFavoriteMovies() {
+        viewModelScope.launch {
+            val favorites = movieRepository.getFavoritesMovies()
+            _favoriteMovies.value = favorites ?: emptyList()
+        }
+    }
 
-
-
+    // Agregar o eliminar una película de favoritos
+    fun toggleFavoriteMovie(movie: Movie) {
+        viewModelScope.launch {
+            if (_isFavorite.value) {
+                // Si la película ya es favorita, la eliminamos
+                movieRepository.removeFavoriteMovie(movie)
+            } else {
+                // Si no es favorita, la agregamos
+                movieRepository.addFavoriteMovie(movie)
+            }
+            _isFavorite.value = !_isFavorite.value
+            loadFavoriteMovies() // Recarga la lista de favoritos actualizada
+        }
+    }
+    fun checkIfFavorite(movieId: Long) {
+        viewModelScope.launch {
+            _isFavorite.value = movieRepository.isFavorite(movieId)
+        }
+    }
 
 }
