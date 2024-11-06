@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Seminario Mobile</string>
+    <string name="loading">Cargando...</string>
+    <string name="more_movies">Más Peliculas</string>
+    <string name="search">Buscar</string>
+    <string name="search_placeholder">Buscar una película...</string>
+    <string name="popular">Popular</string>
+    <string name="favorites">Favoritas</string>
+    <string name="favorites_movies">Películas Favorita</string>
+    <string name="not_favorites_movies">Upss.. No tienes peliculas favoritas</string>
+    <string name="movie_not_found">Película no encontrada :(</string>
+    <string name="no_connection">Chequea tu conexión a internet</string>
+</resources>

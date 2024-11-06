@@ -9,5 +9,6 @@
     <string name="favorites_movies">Favorites Movies</string>
     <string name="not_favorites_movies">Opss.. There are no favorite movies</string>
     <string name="movie_not_found">Movie not found :(</string>
+    <string name="no_connection">No connection, please check.</string>
 
 </resources>

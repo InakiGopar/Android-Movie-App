@@ -39,6 +39,10 @@ class MovieRepository @Inject constructor(
         return favMovieLocalDataSource.getAll()
     }
 
+    suspend fun getFavoriteMovie(id: Long): Movie? {
+        return favMovieLocalDataSource.get(id)
+    }
+
     suspend fun addFavoriteMovie(movie: Movie): Long? {
         return favMovieLocalDataSource.insert(movie)
     }

@@ -1,5 +1,9 @@
 package ar.edu.unicen.seminariomobile.viewModel
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -40,15 +44,47 @@ class MovieViewModel @Inject constructor(
     private val _favoriteMovies = MutableStateFlow<List<Movie>>(emptyList())
     val favoriteMovies: StateFlow<List<Movie>> = _favoriteMovies.asStateFlow()
 
+    //Flow para una pelicula favorita en particular
+    private val _favMovie = MutableStateFlow<Movie?>(null)
+    val favMovie: StateFlow<Movie?> get() = _favMovie.asStateFlow()
+
     //flow para verificar si una pelicula esta en favoritos o no
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
 
+    //flow para verificar la conexion a internet
+    private val _isConnected = MutableStateFlow(true)
+    val isConnected: StateFlow<Boolean> = _isConnected
 
     // Control de búsqueda
     private var currentSearchQuery: String = ""
 
     private var searchJob: Job? = null
+
+
+    //Verifico si hay conexion a internet
+    private fun isConnectedToInternet(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        // Para versiones de Android 10 o superiores (API nivel 29+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        } else {
+            // Para versiones anteriores de Android
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
+        }
+    }
+
+    //Chequeo la conexion a internet
+    fun checkConnectivity(context: Context ) {
+        viewModelScope.launch {
+            // Verificar la conectividad a internet
+            _isConnected.value = isConnectedToInternet(context)
+        }
+    }
 
 
     //obtener todas las peliculas
@@ -85,10 +121,18 @@ class MovieViewModel @Inject constructor(
             _isLoading.value = true
 
             val movie = movieRepository.getMovieById(id)
+
             _movie.value = movie
 
             _isLoading.value = false
 
+        }
+    }
+
+    fun getFavoriteMovieById(id: Long) {
+        viewModelScope.launch {
+            val favMovie = movieRepository.getFavoriteMovie(id)
+            _favMovie.value = favMovie
         }
     }
 

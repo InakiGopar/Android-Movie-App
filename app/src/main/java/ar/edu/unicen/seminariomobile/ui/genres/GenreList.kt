@@ -1,4 +1,4 @@
-package ar.edu.unicen.seminariomobile.ui.components.genres
+package ar.edu.unicen.seminariomobile.ui.genres
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi

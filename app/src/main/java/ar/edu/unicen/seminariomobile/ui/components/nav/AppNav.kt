@@ -7,6 +7,7 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -14,6 +15,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import ar.edu.unicen.seminariomobile.R
 import ar.edu.unicen.seminariomobile.viewModel.MovieViewModel
 
@@ -23,6 +25,18 @@ fun AppNav(
     navController: NavController,
     movieViewModel: MovieViewModel
 ) {
+
+    // Observar la pila de navegación para actualizar el tab cuando cambie de pantalla
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    // Detectar cambios en la ruta de navegación y actualizar el tab
+    LaunchedEffect(currentRoute) {
+        when (currentRoute) {
+            "movies" -> tabIndex.value = 0
+            "favorites" -> tabIndex.value = 1
+        }
+    }
+
     TabRow(
         selectedTabIndex = tabIndex.value,
         containerColor = colorResource(id = R.color.brandColor),
@@ -72,6 +86,7 @@ fun AppNav(
                     contentDescription = null,
                 )
             },
+
             selectedContentColor = colorResource(id = R.color.white)
         )
     }

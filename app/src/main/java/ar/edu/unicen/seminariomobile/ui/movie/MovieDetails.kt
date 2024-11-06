@@ -36,7 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ar.edu.unicen.seminariomobile.R
 import ar.edu.unicen.seminariomobile.data.Movie
 import ar.edu.unicen.seminariomobile.data.dto.Genre
-import ar.edu.unicen.seminariomobile.ui.components.genres.GenreList
+import ar.edu.unicen.seminariomobile.ui.genres.GenreList
 import ar.edu.unicen.seminariomobile.viewModel.MovieViewModel
 import coil.compose.SubcomposeAsyncImage
 

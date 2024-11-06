@@ -30,6 +30,20 @@ class FavMovieLocalDataSource @Inject constructor(
        }
     }
 
+
+    suspend fun get(id: Long): Movie? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val favMovie = favoriteMovieDao.getFavoriteMovieById(id)?.toMovie()
+                return@withContext favMovie
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext null
+            }
+        }
+    }
+
     /**
      * Inserta una pelicula dentro de la base de datos, luego de chequear si la pelicula a insertar
      * no existe.

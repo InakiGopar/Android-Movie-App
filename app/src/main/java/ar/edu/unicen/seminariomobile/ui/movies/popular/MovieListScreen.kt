@@ -8,10 +8,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -19,7 +22,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import ar.edu.unicen.seminariomobile.data.Movie
 import ar.edu.unicen.seminariomobile.ui.components.Search
 import ar.edu.unicen.seminariomobile.ui.components.LoadingScreen
-import ar.edu.unicen.seminariomobile.ui.components.NotFound
+import ar.edu.unicen.seminariomobile.ui.errors.NoConnection
+import ar.edu.unicen.seminariomobile.ui.errors.NotFound
 import ar.edu.unicen.seminariomobile.viewModel.MovieViewModel
 
 
@@ -30,12 +34,17 @@ fun MovieListScreen(
     navController: NavController
 ) {
 
+    // Obtener el contexto actual
+    val context = LocalContext.current
 
     val movies: LazyPagingItems<Movie> = movieViewModel.movies.collectAsLazyPagingItems()
     val (search, setSearch) = remember { mutableStateOf("") }
+    //Estado de la conectividad
+    val isConnected by movieViewModel.isConnected.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         movieViewModel.getCurrentMovies()
+        movieViewModel.checkConnectivity(context)
     }
 
     Search(
@@ -48,45 +57,51 @@ fun MovieListScreen(
         }
     )
 
-    //Mensaje que muestra que no se encontraron peliculas
-    if ( movies.itemCount == 0 && movies.loadState.append.endOfPaginationReached) {
-        NotFound()
+    if (!isConnected) {
+        NoConnection()
     }
+    else {
 
-    when (movies.loadState.refresh) {
-        is LoadState.Loading -> {
-            LoadingScreen()
-        }
-
-
-        is LoadState.Error -> {
+        //Mensaje que muestra que no se encontraron peliculas
+        if ( movies.itemCount == 0 && movies.loadState.append.endOfPaginationReached) {
             NotFound()
         }
 
 
-        else -> {
-            //recordar el estado de la lista de peliculas
-            val movieListState = rememberLazyGridState()
+        when (movies.loadState.refresh) {
+            is LoadState.Loading -> {
+                LoadingScreen()
+            }
 
-            LazyVerticalGrid(
-                state = movieListState,
-                columns = GridCells.Fixed(2),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 80.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                items(movies.itemCount) { index ->
-                    val movie = movies[index]
-                    if (movie != null) {
-                        MovieListItem(
-                            movie = movie,
-                            navController = navController
-                        )
+
+            is LoadState.Error -> {
+                NotFound()
+            }
+
+
+            else -> {
+                //recordar el estado de la lista de peliculas
+                val movieListState = rememberLazyGridState()
+
+                LazyVerticalGrid(
+                    state = movieListState,
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 80.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    items(movies.itemCount) { index ->
+                        val movie = movies[index]
+                        if (movie != null) {
+                            MovieListItem(
+                                movie = movie,
+                                navController = navController
+                            )
+                        }
                     }
                 }
             }
         }
     }
-
 }

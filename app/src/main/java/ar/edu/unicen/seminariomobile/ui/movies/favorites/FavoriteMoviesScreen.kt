@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +38,12 @@ fun FavoriteMoviesScreen(
         movieViewModel.loadFavoriteMovies()
     }
 
-    Surface {
+    Surface (
+        contentColor = colorResource(R.color.backgroundColor),
+        color = colorResource(R.color.backgroundColor)
+    ) {
+
+        //mensaje que no hay peliculas favoritas
         if (favoriteMovies.value.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -46,7 +52,8 @@ fun FavoriteMoviesScreen(
                 Text(
                     text = stringResource(id = R.string.not_favorites_movies),
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight(600)
+                    fontWeight = FontWeight(600),
+                    color = colorResource(R.color.textPrimaryColor)
                     )
             }
         } else {
@@ -54,13 +61,16 @@ fun FavoriteMoviesScreen(
                 modifier = Modifier.fillMaxSize().padding(top = 25.dp),
                 contentAlignment = Alignment.TopCenter
             ) {
+                //texto de peliculas favoritas
                 Text(
                     text = stringResource(id = R.string.favorites_movies),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight(600),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = colorResource(R.color.textPrimaryColor)
                 )
             }
+            //peliculas favoritas
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier

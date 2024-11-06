@@ -13,6 +13,12 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +32,7 @@ import androidx.navigation.NavController
 import ar.edu.unicen.seminariomobile.R
 import ar.edu.unicen.seminariomobile.data.Movie
 import coil.compose.SubcomposeAsyncImage
+import kotlinx.coroutines.delay
 
 @Composable
 fun MovieListItem(
@@ -33,10 +40,31 @@ fun MovieListItem(
     navController: NavController
 ) {
 
-    Column (
-        modifier = Modifier.padding(16.dp).clickable {
+    // Estado para prevenir clics rápidos y evitar errores de duplicación
+    var isClickEnabled by remember { mutableStateOf(true) }
+
+    // Manejar el clic
+    val onMovieClick = rememberUpdatedState {
+        if (isClickEnabled) {
+            // Deshabilitar el clic
+            isClickEnabled = false
+
+            // Navegar a la pantalla de detalles de la película
             navController.navigate("movies/${movie.id}")
-        },
+
+        }
+    }
+
+    // Volver a habilitar el clic después de 500ms
+    LaunchedEffect(Unit) {
+        delay(500)
+        isClickEnabled = true
+    }
+
+    Column (
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable(onClick = onMovieClick.value), // Usar el debounce aquí
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
