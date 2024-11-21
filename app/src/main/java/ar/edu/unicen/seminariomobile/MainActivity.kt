@@ -20,6 +20,7 @@ import ar.edu.unicen.seminariomobile.ui.components.nav.AppNav
 import ar.edu.unicen.seminariomobile.ui.movie.MovieDetailsScreen
 import ar.edu.unicen.seminariomobile.ui.movies.favorites.FavoriteMoviesScreen
 import ar.edu.unicen.seminariomobile.ui.movies.popular.MovieListScreen
+import ar.edu.unicen.seminariomobile.ui.movies.tendencies.TendenciesMovieScreen
 import ar.edu.unicen.seminariomobile.viewModel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,8 +60,13 @@ class MainActivity : AppCompatActivity() {
                             )
                         }
                         composable("favorites") {
-                            // Aquí debes definir tu pantalla de favoritos, similar a MovieListScreen
                             FavoriteMoviesScreen(
+                                movieViewModel = viewModel,
+                                navController = navController
+                            )
+                        }
+                        composable("tendencies") {
+                            TendenciesMovieScreen(
                                 movieViewModel = viewModel,
                                 navController = navController
                             )

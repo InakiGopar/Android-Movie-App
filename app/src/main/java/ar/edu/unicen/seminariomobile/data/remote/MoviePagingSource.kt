@@ -16,13 +16,17 @@ class MoviePagingSource (
             val page = params.key ?: 1
 
             movies =
+                //si el usuario busca una pelicula
                 if (query.isNotBlank()) {
+                //me traigo ese resultado de peliculas paginado
                 movieDataSource.searchMovies(query, page) ?: emptyList()
                 }
                 else {
+                    //me traigo el resultado por default que provee el servicio
                     movieDataSource.getMovies(page) ?: emptyList()
                 }
 
+            //logica para manejar el numero de paginación
             LoadResult.Page(
                 data = movies,
                 prevKey = if (page == 1) null else page - 1,

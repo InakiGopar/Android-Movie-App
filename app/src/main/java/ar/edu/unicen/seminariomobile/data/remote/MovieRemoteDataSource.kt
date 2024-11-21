@@ -64,5 +64,22 @@ class MovieRemoteDataSource @Inject constructor(
         }
     }
 
+    suspend fun getTrendMovies(
+        timeWindow: String
+    ): List<Movie>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = movieApi.getTrendMovies(timeWindow, ApiConfig.API_KEY)
+                return@withContext response.body()?.results?.map { trendMovie ->
+                    trendMovie.toMovie()
+                }
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext null
+            }
+        }
+    }
+
 
 }

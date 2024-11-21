@@ -64,7 +64,7 @@ fun MovieListItem(
     Column (
         modifier = Modifier
             .padding(16.dp)
-            .clickable(onClick = onMovieClick.value), // Usar el debounce aquí
+            .clickable(onClick = onMovieClick.value),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

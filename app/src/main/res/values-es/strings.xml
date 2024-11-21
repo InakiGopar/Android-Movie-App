@@ -7,8 +7,13 @@
     <string name="search_placeholder">Buscar una película...</string>
     <string name="popular">Popular</string>
     <string name="favorites">Favoritas</string>
+    <string name="tendencies">Tendencias</string>
     <string name="favorites_movies">Películas Favoritas</string>
+    <string name="trend_movies">Peliculas en Tendencia</string>
+    <string name="day_trend">Diarias</string>
+    <string name="week_trend">Semanales</string>
     <string name="not_favorites_movies">Upss.. No tienes peliculas favoritas</string>
+    <string name="not_tendencies">Upss.. No hay peliculas para mostrar</string>
     <string name="movie_not_found">Película no encontrada :(</string>
     <string name="no_connection">Chequea tu conexión a internet</string>
 </resources>

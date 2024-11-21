@@ -6,9 +6,13 @@
     <string name="search_placeholder">write your favorite movie</string>
     <string name="popular">Popular</string>
     <string name="favorites">Favorites</string>
+    <string name="tendencies">Tendencies</string>
     <string name="favorites_movies">Favorites Movies</string>
+    <string name="trend_movies">Trend Movies</string>
+    <string name="day_trend">Day Trend</string>
+    <string name="week_trend">Week Trend</string>
     <string name="not_favorites_movies">Opss.. There are no favorite movies</string>
+    <string name="not_tendencies">Opss.. There are no movies here</string>
     <string name="movie_not_found">Movie not found :(</string>
     <string name="no_connection">No connection, please check.</string>
-
 </resources>

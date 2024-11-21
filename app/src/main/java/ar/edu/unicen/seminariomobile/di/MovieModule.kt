@@ -39,6 +39,4 @@ class MovieModule {
         return MovieRepository(movieDataSource, favMovieLocalDataSource)
     }
 
-
-
 }

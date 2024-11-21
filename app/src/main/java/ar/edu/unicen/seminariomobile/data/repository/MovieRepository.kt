@@ -35,6 +35,12 @@ class MovieRepository @Inject constructor(
         return movieDataSource.getMovieById(movieId)
     }
 
+    suspend fun getTrendMovies(
+        timeWindow: String
+    ): List<Movie>? {
+        return movieDataSource.getTrendMovies(timeWindow)
+    }
+
     suspend fun getFavoritesMovies() : List<Movie>? {
         return favMovieLocalDataSource.getAll()
     }
@@ -54,8 +60,6 @@ class MovieRepository @Inject constructor(
     suspend fun isFavorite(movieId: Long): Boolean {
         return favMovieLocalDataSource.isFavorite(movieId)
     }
-
-
 
 
 }

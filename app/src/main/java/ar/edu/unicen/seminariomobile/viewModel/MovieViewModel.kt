@@ -44,6 +44,14 @@ class MovieViewModel @Inject constructor(
     private val _favoriteMovies = MutableStateFlow<List<Movie>>(emptyList())
     val favoriteMovies: StateFlow<List<Movie>> = _favoriteMovies.asStateFlow()
 
+    //Flow para peliculas en tendencia
+    private val _trendMovies = MutableStateFlow<List<Movie>>(emptyList())
+    val trendMovies: StateFlow<List<Movie>> = _trendMovies.asStateFlow()
+
+    //Flow para seleccionar las tendencias del dia o de la semana
+    private val _selectedTrend = MutableStateFlow("day")
+    val selectedTrend: StateFlow<String> = _selectedTrend
+
     //Flow para una pelicula favorita en particular
     private val _favMovie = MutableStateFlow<Movie?>(null)
     val favMovie: StateFlow<Movie?> get() = _favMovie.asStateFlow()
@@ -57,9 +65,15 @@ class MovieViewModel @Inject constructor(
     val isConnected: StateFlow<Boolean> = _isConnected
 
     // Control de búsqueda
-    private var currentSearchQuery: String = ""
+    private val _currentSearchQuery = MutableStateFlow("")
+    val currentSearchQuery: StateFlow<String> = _currentSearchQuery
 
     private var searchJob: Job? = null
+
+    init {
+        // Observa los cambios en _currentSearchQuery
+        getMovies()
+    }
 
 
     //Verifico si hay conexion a internet
@@ -90,8 +104,6 @@ class MovieViewModel @Inject constructor(
     //obtener todas las peliculas
     private fun getMovies(query: String = "") {
 
-        currentSearchQuery = query
-
         searchJob?.cancel() // Cancelar el trabajo anterior si existe
 
         searchJob = viewModelScope.launch {
@@ -102,11 +114,6 @@ class MovieViewModel @Inject constructor(
                     _movies.value = pagingData
                 }
         }
-    }
-
-    //traerme las peliculas actuales
-    fun getCurrentMovies() {
-        getMovies(currentSearchQuery)
     }
 
     //Buscar peliculas en base a un titulo
@@ -129,6 +136,7 @@ class MovieViewModel @Inject constructor(
         }
     }
 
+    //Obtener una pelicula favorita por su id
     fun getFavoriteMovieById(id: Long) {
         viewModelScope.launch {
             val favMovie = movieRepository.getFavoriteMovie(id)
@@ -158,10 +166,29 @@ class MovieViewModel @Inject constructor(
             loadFavoriteMovies() // Recarga la lista de favoritos actualizada
         }
     }
+
     fun checkIfFavorite(movieId: Long) {
         viewModelScope.launch {
             _isFavorite.value = movieRepository.isFavorite(movieId)
         }
+    }
+
+    //traer las peliculas en tendencias
+    fun getTrendMovies() {
+        viewModelScope.launch {
+            _isLoading.value = true
+
+            val trendMovies = movieRepository.getTrendMovies(_selectedTrend.value)
+
+            _trendMovies.value = trendMovies ?: emptyList()
+
+            _isLoading.value = false
+        }
+    }
+
+    //Cambiar el valor de dia o semana para las peliculas en tendencias
+    fun setSelectedTrend(trend: String) {
+        _selectedTrend.value = trend
     }
 
 }

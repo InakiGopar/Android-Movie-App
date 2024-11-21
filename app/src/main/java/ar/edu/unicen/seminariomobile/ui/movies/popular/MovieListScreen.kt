@@ -8,9 +8,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -37,21 +39,25 @@ fun MovieListScreen(
     // Obtener el contexto actual
     val context = LocalContext.current
 
+    // Escucha los cambios en el estado de las películas y la consulta de búsqueda
     val movies: LazyPagingItems<Movie> = movieViewModel.movies.collectAsLazyPagingItems()
-    val (search, setSearch) = remember { mutableStateOf("") }
+    val currentSearchQuery by movieViewModel.currentSearchQuery.collectAsState()
+
+    // Estado del texto de búsqueda
+    var search by remember { mutableStateOf(currentSearchQuery) }
+
     //Estado de la conectividad
     val isConnected by movieViewModel.isConnected.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        movieViewModel.getCurrentMovies()
         movieViewModel.checkConnectivity(context)
     }
 
     Search(
         searchText = search,
-        setSearchText = setSearch,
+        setSearchText = { search = it },
         onSearchClick = {
-            if (search.isNotBlank()) {
+            if (search.isNotBlank() && search != currentSearchQuery) {
                 movieViewModel.searchMovies(search)
             }
         }

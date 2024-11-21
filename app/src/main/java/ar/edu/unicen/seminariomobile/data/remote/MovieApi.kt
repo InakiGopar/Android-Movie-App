@@ -45,4 +45,19 @@ interface MovieApi {
         @Query("query") title: String,
         @Query("page") page: Int
     ): Response<MovieDto>
+
+
+    /**
+     * Endpoint que trae las peliculas que estan en tendencia
+     *
+     * @path time_window: especifica si quieres traer las tendencias del dia o de la semana
+     * @query api_key: pasar clave de API para autenticar las solicitudes.
+     *
+     * */
+    @GET("trending/movie/{time_window}")
+    suspend fun getTrendMovies(
+        @Path("time_window") timeWindow: String,
+        @Query("api_key") apiKey: String
+    ): Response<MovieDto>
+
 }

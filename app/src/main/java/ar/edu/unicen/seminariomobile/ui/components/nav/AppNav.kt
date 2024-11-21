@@ -34,6 +34,7 @@ fun AppNav(
         when (currentRoute) {
             "movies" -> tabIndex.value = 0
             "favorites" -> tabIndex.value = 1
+            "tendencies" -> tabIndex.value = 2
         }
     }
 
@@ -82,6 +83,27 @@ fun AppNav(
             icon = {
                 Image(
                     painter = painterResource(R.drawable.ic_popular),
+                    colorFilter =  ColorFilter.tint(colorResource(id = R.color.white)),
+                    contentDescription = null,
+                )
+            },
+
+            selectedContentColor = colorResource(id = R.color.white)
+        )
+        Tab(
+            selected = tabIndex.value == 2,
+            onClick = {
+                tabIndex.value = 2
+                navController.navigate("tendencies") // Navega a la pantalla de "Películas en tendencia"
+            },
+            text = {
+                Text(
+                    stringResource(id = R.string.tendencies)
+                )
+            },
+            icon = {
+                Image(
+                    painter = painterResource(R.drawable.ic_tendencies),
                     colorFilter =  ColorFilter.tint(colorResource(id = R.color.white)),
                     contentDescription = null,
                 )
